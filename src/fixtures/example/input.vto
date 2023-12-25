@@ -7,7 +7,7 @@ accent: "{{ if isLight }}pink{{ else }}mauve{{ /if }}"
 
 ## Example
 
-**flavor:** {{ flavor |> toTitleCase }}
+**flavor:** {{ titlecase(flavor) }}
 
 ### Frontmatter Variables
 

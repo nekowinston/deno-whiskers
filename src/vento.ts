@@ -7,11 +7,6 @@ import { stringify as stringifyTOML } from "https://deno.land/std@0.210.0/toml/m
 import type { CatppuccinFlavorObj } from "./ctp.ts";
 
 export const vento = Vento({
-  // shim the loader
-  includes: {
-    load: (_) => ({ source: "", data: {} }),
-    resolve: (_) => "",
-  },
   dataVarname: "root",
 });
 

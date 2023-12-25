@@ -100,9 +100,6 @@ export const compile = async (
       .then((result) => {
         return result.content
           .replaceAll(/['"]{{WHISKERS:UNQUOTE:(.*?)}}['"]/g, "$1");
-      }).catch((err) => {
-        console.error(err);
-        Deno.exit(1);
       });
   }
 
