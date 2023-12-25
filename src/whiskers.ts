@@ -2,40 +2,44 @@
 import { test as testForFrontmatter } from "https://deno.land/std@0.210.0/front_matter/mod.ts";
 import { extract } from "https://deno.land/std@0.210.0/front_matter/yaml.ts";
 import { deepMerge } from "https://deno.land/std@0.210.0/collections/deep_merge.ts";
+import { type Instance, tinycolor } from "./tinycolor.ts";
 
-import { CatppuccinColor, CatppuccinFlavor, palette } from "./ctp.ts";
-import { Handlebars } from "./hbs.ts";
+import { type CatppuccinColor, type CatppuccinFlavor, palette } from "./ctp.ts";
+import { makeHelpers, vento } from "./vento.ts";
 
 type FlavorDirective = CatppuccinFlavor | "all";
+type WhiskersResult = Record<CatppuccinFlavor, string>;
 
-export const compile = (
-  template: string,
+export const compile = async (
+  input: string,
   flavor: FlavorDirective,
   options?: {
     overrides?: Record<string, unknown>;
   },
-): Record<CatppuccinFlavor, string> => {
+): Promise<WhiskersResult> => {
   const flavors: CatppuccinFlavor[] = flavor === "all"
     ? ["mocha", "macchiato", "frappe", "latte"]
     : [flavor];
 
-  return flavors.reduce((acc, flavor) => {
-    let input: string;
+  const result = {} as WhiskersResult;
+
+  for await (const flavor of flavors) {
+    let template: string;
     let attrs: Record<string, unknown> = {};
 
-    if (testForFrontmatter(template, ["yaml"])) {
-      ({ body: input, attrs } = extract(template));
+    if (testForFrontmatter(input, ["yaml"])) {
+      ({ body: template, attrs } = extract(input));
     } else {
-      input = template;
+      template = input;
       attrs = {};
     }
 
     const ctpHexColors = Object.entries(palette[flavor].colors).reduce(
       (acc, [colorName, colorValue]) => {
-        acc[colorName] = colorValue.hex.replace("#", "");
+        acc[colorName] = tinycolor(colorValue.hex.replace("#", ""));
         return acc;
       },
-      {} as Record<CatppuccinColor, string>,
+      {} as Record<CatppuccinColor, Instance>,
     );
 
     const basicContext = {
@@ -43,6 +47,8 @@ export const compile = (
       isLight: palette[flavor].dark,
       isDark: !palette[flavor].dark,
       ...ctpHexColors,
+      colors: ctpHexColors,
+      ...makeHelpers(palette[flavor]),
     };
 
     // cli overrides
@@ -53,18 +59,19 @@ export const compile = (
 
     // fully parse the frontmatter, apply overrides
     // while also compiling the handlebars expressions
-    const reducer = (acc: Record<string, unknown>, [key, value]: [
-      string,
-      unknown,
-    ]) => {
+    const reducer = (
+      acc: Record<string, unknown>,
+      [key, value]: [string, unknown],
+    ) => {
       if (typeof value === "object" && value !== null) {
         acc[key] = Object.entries(value).reduce(reducer, {});
         return acc;
       }
-      acc[key] = Handlebars.compile(String(value))(deepMerge(
-        basicContext,
-        overrides,
-      ));
+      const { content } = vento.runStringSync(
+        String(value),
+        deepMerge(basicContext, overrides),
+      );
+      acc[key] = content;
       return acc;
     };
     const frontmatter = Object.entries(attrs).reduce(reducer, {});
@@ -76,22 +83,28 @@ export const compile = (
      * - cli overrides
      * are all merged
      */
-    const context = deepMerge(
+    const data = deepMerge(
       deepMerge(
-        deepMerge(basicContext, frontmatter),
+        deepMerge(
+          basicContext,
+          frontmatter,
+        ),
         frontmatter?.overrides ?? {},
       ),
       overrides,
     );
 
-    const result = Handlebars
-      .compile(input, { strict: true })(context)
+    result[flavor] = await vento
+      .runString(template, data)
       // post-process the unquote helper
-      .replaceAll(/['"]{{WHISKERS:UNQUOTE:(.*?)}}['"]/g, "$1");
+      .then((result) => {
+        return result.content
+          .replaceAll(/['"]{{WHISKERS:UNQUOTE:(.*?)}}['"]/g, "$1");
+      }).catch((err) => {
+        console.error(err);
+        Deno.exit(1);
+      });
+  }
 
-    acc[flavor] = result;
-    console.log(result);
-
-    return acc;
-  }, {} as Record<CatppuccinFlavor, string>);
+  return Promise.resolve(result);
 };

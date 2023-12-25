@@ -1,0 +1,24 @@
+## Example
+
+**flavor:** Mocha
+
+### Frontmatter Variables
+
+- **parent** is darcula
+- **accent** is pink
+
+### Colours
+
+- **red:**                #f38ba8 / rgb(243, 139, 168) / hsl(343, 81%, 75%)
+- **components:**         r: 243 / 0.95, g: 139 / 0.55, b: 168 / 0.66
+- **alpha:**              153 / 0.60
+- **10% lighter:**        #f8b9cb / rgb(248, 185, 203) / hsl(343, 81%, 85%)
+- **10% darker:**         #ee5d85 / rgb(238, 93, 133) / hsl(343, 81%, 65%)
+
+### Conditionals
+
+this is a dark theme
+
+### Misc
+
+unquote this: true

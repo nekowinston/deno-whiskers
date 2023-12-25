@@ -1,0 +1,31 @@
+---
+# like jetbrains
+parent: "{{ darklight('darcula', 'default') }}"
+# alternative built-in method
+accent: "{{ if isLight }}pink{{ else }}mauve{{ /if }}"
+---
+
+## Example
+
+**flavor:** {{ flavor |> toTitleCase }}
+
+### Frontmatter Variables
+
+- **parent** is {{ parent }}
+- **accent** is {{ accent }}
+
+### Colours
+
+- **red:**                {{ red.toHexString() }} / {{ red.toRgbString() }} / {{ red.toHslString() }}
+- **components:**         r: {{ red.toRgb().r }} / {{ red.toRgbFloat().r }}, g: {{ red.toRgb().g }} / {{ red.toRgbFloat().g }}, b: {{ red.toRgb().b }} / {{ red.toRgbFloat().b }}
+- **alpha:**              {{ opacity(red, 0.6).getAlpha() }} / {{ opacity(red, 0.6).getAlphaFloat() }}
+- **10% lighter:**        {{ lighten(red, 0.10) }} / {{ lighten(red, 0.10).toRgbString() }} / {{ lighten(red, 0.10).toHslString() }}
+- **10% darker:**         {{ darken(red, 0.10) }} / {{ darken(red, 0.10).toRgbString() }} / {{ darken(red, 0.10).toHslString() }}
+
+### Conditionals
+
+this is a {{ darklight("dark", "light") }} theme
+
+### Misc
+
+unquote this: "{{ unquote(isLight) }}"

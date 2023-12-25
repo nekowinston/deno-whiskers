@@ -17,13 +17,13 @@ if (import.meta.main) {
       args: [
         "compile",
         "--cached-only",
-        "--allow-read=.",
-        "--allow-write=.",
+        "--allow-read",
+        "--allow-write",
         "--target",
         target,
         "--output",
         binName,
-        "src/cli.ts",
+        "main.ts",
       ],
     }).output();
 
