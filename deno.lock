@@ -305,7 +305,6 @@
     "https://esm.sh/v135/type-fest@4.8.3/denonext/source/simplify.d.js": "df8e24f0524dbd97c366cc85bb0cfcc929d7a606ad99969c426d198a7c336c0c",
     "https://esm.sh/v135/type-fest@4.8.3/denonext/source/union-to-intersection.d.js": "4e7ea49212840d9ac7ccc57066084004a5f3880439c6e2d95c60fd8b98fa5aa2",
     "https://esm.sh/v135/type-fest@4.8.3/source/simplify.d": "6d148e26b1e58ccc7aa9699e2d0de830f0bc4221b6b098700763fd757ff7b5ad",
-    "https://esm.sh/v135/type-fest@4.8.3/source/union-to-intersection.d": "e83c6075c4a23e3b01dd9ff87e31a0d91b7a5fdf17bf606d82c9a72e895d939d",
-    "https://raw.githubusercontent.com/catppuccin/palette/feat/rewrite/palette.json": "cdeeec8d0f39880ad00cf91fb082174a68c6fc13547a51bc536de4a8177a75a5"
+    "https://esm.sh/v135/type-fest@4.8.3/source/union-to-intersection.d": "e83c6075c4a23e3b01dd9ff87e31a0d91b7a5fdf17bf606d82c9a72e895d939d"
   }
 }
