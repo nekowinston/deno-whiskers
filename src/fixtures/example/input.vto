@@ -1,7 +1,6 @@
 ---
 parent: "{{ darklight('darcula', 'default') }}"
 accent: "{{ isLight ? 'pink' : 'mauve' }}"
-destructured: "{{ red.toRgb() }}"
 ---
 ## Example
 
@@ -11,7 +10,6 @@ destructured: "{{ red.toRgb() }}"
 
 - **parent** is {{ parent }}
 - **accent** is {{ accent }}
-- **destructured** is {{ destructured |> toJSON }}
 
 ### Colours
 
@@ -28,3 +26,6 @@ this is a {{ darklight("dark", "light") }} theme
 ### Misc
 
 unquote this: "{{ unquote(isLight) }}"
+
+convert color data to json:
+{{ colors |> toJSON }}

@@ -45,7 +45,7 @@ const hasAllProperties = (obj: object, props: string[]) =>
 // structured Data helpers
 const parseColors = (input: Record<string, unknown>) =>
   JSON.parse(JSON.stringify(input, (_, v) => {
-    // if it's an instance of tinycolor, strinfify it
+    // if it's an instance of tinycolor, stringify it
     if (
       typeof v === "object" &&
       hasAllProperties(v, ["_originalInput", "_format", "_ok"]) &&
@@ -60,7 +60,7 @@ vento.filters.toJSON = (input: Record<string, unknown>, space = 2) =>
 vento.filters.toTOML = (input: Record<string, unknown>) =>
   stringifyTOML(parseColors(input));
 
-vento.filters.toYaml = (input: Record<string, unknown>, space = 2) =>
+vento.filters.toYAML = (input: Record<string, unknown>, space = 2) =>
   stringifyYaml(parseColors(input), { indent: space });
 
 /**

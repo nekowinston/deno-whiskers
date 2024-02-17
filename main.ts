@@ -105,7 +105,7 @@ if (import.meta.main) {
       console.log(result);
     })
     .command("scaffold", scaffoldCmd)
-    // .command("upgrade", upgradeCmd)
+    .command("upgrade", upgradeCmd)
     .command("completions", new CompletionsCommand())
     .parse();
 }

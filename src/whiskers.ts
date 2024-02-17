@@ -40,8 +40,8 @@ export const compile = async (
 
   if (testForFrontmatter(input, ["yaml", "unknown"])) {
     const extract = createExtractor({
-      ["yaml"]: parseYaml as Parser,
-      "unknown": (s: string) => s,
+      yaml: parseYaml as Parser,
+      unknown: ((s: string) => s) as Parser,
     });
 
     ({ body: template, attrs } = extract(input));
