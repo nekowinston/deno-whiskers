@@ -23,7 +23,7 @@ const accentEnumType = new EnumType(
 if (import.meta.main) {
   await new Command()
     .name("whiskers")
-    .version(denoJSON.version)
+    .version(`v${denoJSON.version}`)
     .description("Whiskers 🤝 Vento")
     .type("accent", accentEnumType)
     .type("log-level", new EnumType(["DEBUG", "INFO", "WARNING", "ERROR"]))
