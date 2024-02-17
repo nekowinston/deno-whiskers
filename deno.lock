@@ -1,6 +1,8 @@
 {
   "version": "3",
   "redirects": {
+    "https://deno.land/std/yaml/mod.ts": "https://deno.land/std@0.210.0/yaml/mod.ts",
+    "https://deno.land/x/catppuccin/mod.ts": "https://deno.land/x/catppuccin@v1.1.0/mod.ts",
     "https://esm.sh/v135/@types/tinycolor2@^1/index.d.ts": "https://esm.sh/v135/@types/tinycolor2@1.4.6/index.d.ts"
   },
   "remote": {
@@ -195,6 +197,7 @@
     "https://deno.land/x/case@2.2.0/vendor/camelCaseRegexp.ts": "7d9ff02aad4ab6429eeab7c7353f7bcdd6cc5909a8bd3dda97918c8bbb7621ae",
     "https://deno.land/x/case@2.2.0/vendor/camelCaseUpperRegexp.ts": "292de54a698370f90adcdf95727993d09888b7f33d17f72f8e54ba75f7791787",
     "https://deno.land/x/case@2.2.0/vendor/nonWordRegexp.ts": "c1a052629a694144b48c66b0175a22a83f4d61cb40f4e45293fc5d6b123f927e",
+    "https://deno.land/x/catppuccin@v1.1.0/palette.json": "0cddd2826c55c631f626a00562d0ee1f15de38893d4a7ddf4b06c9e0440fefef",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/ansi_escapes.ts": "193b3c3a4e520274bd8322ca4cab1c3ce38070bed1898cb2ade12a585dddd7c9",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/chain.ts": "eca61b1b64cad7b9799490c12c7aa5538d0f63ac65a73ddb6acac8b35f0a5323",

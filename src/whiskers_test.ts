@@ -1,7 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.210.0/assert/mod.ts";
 import { join } from "https://deno.land/std@0.210.0/path/mod.ts";
 
-import { type CatppuccinFlavor } from "./ctp.ts";
 import { compile } from "./whiskers.ts";
 
 const data: Record<string, {
@@ -34,6 +33,6 @@ Object.entries(data)
         flavor,
         { overrides: options?.overrides },
       );
-      assertEquals((await result)[flavor as CatppuccinFlavor], expected);
+      assertEquals(await result, expected);
     });
   });

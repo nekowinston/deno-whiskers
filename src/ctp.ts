@@ -1,4 +1,4 @@
-import palette from "https://raw.githubusercontent.com/catppuccin/palette/feat/rewrite/palette.json" with {
+import palette from "https://deno.land/x/catppuccin@v1.1.0/palette.json" with {
   type: "json",
 };
 

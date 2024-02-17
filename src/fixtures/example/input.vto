@@ -1,18 +1,17 @@
 ---
-# like jetbrains
 parent: "{{ darklight('darcula', 'default') }}"
-# alternative built-in method
-accent: "{{ if isLight }}pink{{ else }}mauve{{ /if }}"
+accent: "{{ isLight ? 'pink' : 'mauve' }}"
+destructured: "{{ red.toRgb() }}"
 ---
-
 ## Example
 
-**flavor:** {{ titlecase(flavor) }}
+**flavor:** {{ flavor |> toTitleCase }}
 
 ### Frontmatter Variables
 
 - **parent** is {{ parent }}
 - **accent** is {{ accent }}
+- **destructured** is {{ destructured |> toJSON }}
 
 ### Colours
 

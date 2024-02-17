@@ -7,6 +7,7 @@ import {
   CompletionsCommand,
   EnumType,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.3/command/mod.ts";
+import { tty } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/tty.ts";
 
 import { palette } from "./src/ctp.ts";
 import { compile } from "./src/whiskers.ts";
@@ -26,10 +27,11 @@ if (import.meta.main) {
     .description("Whiskers 🤝 Vento")
     .type("accent", accentEnumType)
     .type("log-level", new EnumType(["DEBUG", "INFO", "WARNING", "ERROR"]))
-    .type("whiskers-flavor", new EnumType([...Object.keys(palette), "all"]))
+    .type("whiskers-flavor", new EnumType(Object.keys(palette)))
     .option("-o, --output <path:string>", "File to write to")
     .option("--overrides <JSON:string>", "Overrides to apply")
     .option("--accent <accent:accent>", "Accent color to use")
+    .option("-w, --watch", "Watch the template file for changes")
     .option("-c, --check", "Lint the template against a previous output")
     .option("-l, --log-level <level:log-level>", "Set log level")
     .arguments("<template:string> <flavor:whiskers-flavor>")
@@ -62,13 +64,13 @@ if (import.meta.main) {
 
       const result = await compile(templateData, flavor, { overrides });
 
-      if (options.check && flavor != "all") {
+      if (options.check) {
         if (!options.output) {
           log.critical("Cannot check without an output file.");
           Deno.exit(1);
         }
         try {
-          assertEquals(result[flavor], await Deno.readTextFile(options.output));
+          assertEquals(result, await Deno.readTextFile(options.output));
         } catch (e) {
           log.critical("Output does not match previous output.");
           Deno.stdout.writeSync(new TextEncoder().encode(e.message));
@@ -78,14 +80,32 @@ if (import.meta.main) {
         Deno.exit(0);
       }
 
-      if (flavor == "all") {
-        Object.values(result).map((v) => console.log(v));
-      } else {
-        console.log(result[flavor]);
+      if (options.watch) {
+        const watcher = Deno.watchFs(templateFp);
+
+        const myTty = tty({
+          writer: Deno.stdout,
+          reader: Deno.stdin,
+        });
+
+        myTty.cursorSave
+          .cursorHide
+          .cursorTo(0, 0)
+          .eraseScreen();
+
+        for await (const event of watcher) {
+          if (event.kind === "modify") {
+            const result = await compile(templateData, flavor, { overrides });
+            console.log(result);
+            log.info("Updated output file.");
+          }
+        }
       }
+
+      console.log(result);
     })
     .command("scaffold", scaffoldCmd)
-    .command("upgrade", upgradeCmd)
+    // .command("upgrade", upgradeCmd)
     .command("completions", new CompletionsCommand())
     .parse();
 }
